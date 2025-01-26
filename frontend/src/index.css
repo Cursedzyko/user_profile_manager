@@ -43,3 +43,21 @@
 .animate-swim-com3 {
     animation: swim-to-center-com 2.3s ease-out forwards;
 }
+
+
+@keyframes make-visible {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-visible {
+    animation: make-visible 1.5s ease-out forwards;
+}
+
+.animate-visible1 {
+    animation: make-visible 3s ease-out forwards;
+}
