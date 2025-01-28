@@ -24,7 +24,7 @@ const Login = () => {
     <div className="bg-gradient-to-b from-gray-700 to-black bg-cover font-mono flex justify-center items-center h-screen">
       {/* Login Box */}
       <div
-        className={`z-40 bg-gray-900 p-8 rounded-lg shadow-lg w-full sm:w-100 m-4 transition-all duration-1000 ${
+        className={`bg-gray-900 p-8 rounded-lg shadow-lg w-full sm:w-100 m-4 transition-all duration-1000 ${
           isLoaded ? "animate-swim" : ""
         }`}
       >
