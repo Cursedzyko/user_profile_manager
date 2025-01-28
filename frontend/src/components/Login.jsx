@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import "../index.css";
 import Input from "./Input";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSingupClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      navigate("/signup");
+    }, 500);
+  };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -21,28 +30,48 @@ const Login = () => {
       >
         <div
           className={`mb-4 text-gray-400 flex justify-center ${
-            isLoaded ? "animate-swim-com" : ""
+            isExiting ? "animate-fade-out" : isLoaded ? "animate-swim" : ""
           }`}
         >
           <h1 className="font-bold ">Login to User Profile</h1>
         </div>
         <form action="" className="bg-gray-900 flex gap-4 flex-col">
-          <div className={`relative ${isLoaded ? "animate-swim-com" : ""}`}>
+          <div
+            className={`relative ${
+              isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com"
+                : ""
+            }`}
+          >
             <Input type={"text"} label={"Username"} />
           </div>
-          <div className={`relative ${isLoaded ? "animate-swim-com1" : ""}`}>
+          <div className={`relative ${isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com1"
+                : ""}`}>
             <Input type={"password"} label={"Password"} />
           </div>
           <div
             className={` flex justify-end ${
-              isLoaded ? "animate-swim-com2" : ""
+              isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com2"
+                : ""
             }`}
           >
             <a href="#" className="text-gray-400">
               Forget Password?
             </a>
           </div>
-          <div className={` w-full ${isLoaded ? "animate-swim-com1" : ""}`}>
+          <div className={` w-full ${isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com1"
+                : ""}`}>
             <button
               type="button"
               className="w-full py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -53,17 +82,25 @@ const Login = () => {
         </form>
         <div
           className={`mb-4 text-gray-400 ${
-            isLoaded ? "animate-swim-com3" : ""
+            isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com3"
+                : ""
           }`}
         >
-          <Link to="/signup">
+          <a onClick={handleSingupClick} className="cursor-pointer">
             Don&apos;t have account?
             <span className="text-blue-200 underline ml-0.5"> Sign Up</span>
-          </Link>
+          </a>
         </div>
         <div
           className={`text-gray-400 flex flex-wrap justify-around ${
-            isLoaded ? "animate-swim-com3" : ""
+            isExiting
+                ? "animate-fade-out"
+                : isLoaded
+                ? "animate-swim-com3"
+                : ""
           }`}
         >
           <button className="btn btn-outline rounded-2xl px-8">
