@@ -1,4 +1,4 @@
-from .models import CustomUser
+from .models import CustomUser, UserInfoDetailed
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,7 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["email", "first_name", "last_name", "password", "confirm_password"]
-        extra_kwargs = {"password": {"write_only": True}}
     
     def validate(self, data):
         """ Check if passwords match """
@@ -20,3 +19,13 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data.pop("confirm_password")
         user = CustomUser.objects.create_user(**validated_data)
         return user
+    
+class UserInfoSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source="user.first_name")
+    last_name = serializers.CharField(source="user.last_name")
+
+    class Meta:
+        model = UserInfoDetailed
+        fields = ["first_name", "last_name", "age", "education", "profession", "bio", "goals", "motivations", "concerns"]
+
+        

@@ -47,3 +47,16 @@ class CustomUser(AbstractBaseUser):
         Checks if the user has permission to view a specific module.
         """
         return self.is_superuser  # You can customize this logic based on your needs.
+
+class UserInfoDetailed(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="info")
+    age = models.PositiveIntegerField(null=True, blank=True)  # Ensuring no negative ages
+    education = models.CharField(max_length=255, blank=True, null=True)
+    profession = models.CharField(max_length=255, blank=True, null=True)
+    bio = models.TextField(max_length=300, blank=True, null=True)
+    goals = models.TextField(max_length=300, blank=True, null=True)
+    motivations = models.TextField(max_length=300, blank=True, null=True)
+    concerns = models.TextField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return f"user {self.user.email}"
