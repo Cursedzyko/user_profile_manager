@@ -36,8 +36,8 @@ class LoginAPIView(APIView):
             user_info, created = UserInfoDetailed.objects.get_or_create(user=user)
             
             return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
+                'refresh_token': str(refresh),
+                'access_token': str(refresh.access_token),
             })
         else:
             return Response(

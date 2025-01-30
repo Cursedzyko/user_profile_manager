@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import "../index.css";
 import { useState } from "react";
+import { getUserInfo } from "../api/api";
+import Cookies from 'js-cookie';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -48,6 +51,33 @@ const Profile = () => {
       setProfileImage(imageUrl);
     }
   };
+
+  useEffect( () => {
+    const fetchUserInfo = async () =>{
+      try
+      {
+        const token = Cookies.get("access_token");
+        const response = await getUserInfo(token);
+        
+
+        setFirstName(response.first_name || "");
+            setLastName(response.last_name || "");
+            setAge(response.age ?? 0);
+            setEducation(response.education || "");
+            setProfession(response.profession || "");
+            setBio(response.bio || "");
+            setGoals(response.goals || "");
+            setMotivations(response.motivations || "");
+            setConcerns(response.concerns || "");
+      }catch (error)
+      {
+        console.log(error);
+      }
+
+    };
+    fetchUserInfo();
+
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-700 to-black flex justify-center items-center p-8">

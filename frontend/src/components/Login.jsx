@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import "../index.css";
 import Input from "./Input";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/api";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSingupClick = () => {
     setIsExiting(true);
@@ -19,6 +23,22 @@ const Login = () => {
     setIsLoaded(true);
   }, []);
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    const userInfo = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await loginUser(userInfo);
+      Cookies.set('access_token', response.access_token);
+      Cookies.set('refresh_token', response.refresh_token);
+      navigate("/profile");
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
+  };
   return (
     // style={{backgroundImage: `url(${bg})`}}
     <div className="bg-gradient-to-b from-gray-700 to-black bg-cover font-mono flex justify-center items-center h-screen">
@@ -35,7 +55,11 @@ const Login = () => {
         >
           <h1 className="font-bold ">Login to User Profile</h1>
         </div>
-        <form action="" className="bg-gray-900 flex gap-4 flex-col">
+        <form
+          action="post"
+          onSubmit={handleLoginSubmit}
+          className="bg-gray-900 flex gap-4 flex-col"
+        >
           <div
             className={`relative ${
               isExiting
@@ -45,14 +69,28 @@ const Login = () => {
                 : ""
             }`}
           >
-            <Input type={"text"} label={"Username"} />
+            <Input
+              type={"text"}
+              label={"Email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          <div className={`relative ${isExiting
+          <div
+            className={`relative ${
+              isExiting
                 ? "animate-fade-out"
                 : isLoaded
                 ? "animate-swim-com1"
-                : ""}`}>
-            <Input type={"password"} label={"Password"} />
+                : ""
+            }`}
+          >
+            <Input
+              type={"password"}
+              label={"Password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
           <div
             className={` flex justify-end ${
@@ -67,13 +105,17 @@ const Login = () => {
               Forget Password?
             </a>
           </div>
-          <div className={` w-full ${isExiting
+          <div
+            className={` w-full ${
+              isExiting
                 ? "animate-fade-out"
                 : isLoaded
                 ? "animate-swim-com1"
-                : ""}`}>
+                : ""
+            }`}
+          >
             <button
-              type="button"
+              type="submit"
               className="w-full py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             >
               Login
@@ -82,11 +124,7 @@ const Login = () => {
         </form>
         <div
           className={`mb-4 text-gray-400 ${
-            isExiting
-                ? "animate-fade-out"
-                : isLoaded
-                ? "animate-swim-com3"
-                : ""
+            isExiting ? "animate-fade-out" : isLoaded ? "animate-swim-com3" : ""
           }`}
         >
           <a onClick={handleSingupClick} className="cursor-pointer">
@@ -96,11 +134,7 @@ const Login = () => {
         </div>
         <div
           className={`text-gray-400 flex flex-wrap justify-around ${
-            isExiting
-                ? "animate-fade-out"
-                : isLoaded
-                ? "animate-swim-com3"
-                : ""
+            isExiting ? "animate-fade-out" : isLoaded ? "animate-swim-com3" : ""
           }`}
         >
           <button className="btn btn-outline rounded-2xl px-8">
