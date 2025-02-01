@@ -55,6 +55,7 @@ class UserInfo(APIView):
         return Response(serializer.data)
     
     def put(self, request):
+        print(request.data)
         user_info = request.user.info
         serializer = UserInfoSerializer(user_info, data=request.data, partial=True)
         

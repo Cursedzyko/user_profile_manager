@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "../index.css";
 import { useState } from "react";
-import { getUserInfo } from "../api/api";
+import { getUserInfo, updateUserInfo } from "../api/api";
 import Cookies from 'js-cookie';
 
 const Profile = () => {
@@ -29,19 +29,30 @@ const Profile = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    console.log(
-      "Profile saved:",
-      firstName,
-      lastName,
-      age,
-      education,
-      profession,
-      bio,
-      goals,
-      motivations,
-      concerns
-    );
-    setIsEditing(false);
+    const updatedInfo ={
+      first_name: firstName,
+      "last_name":lastName,
+      "age":age,
+      "education":education,
+      "profession":profession,
+      "bio":bio,
+      "goals":goals,
+      "motivations":motivations,
+      "concerns": concerns
+
+    }
+    
+
+    try{
+      const token = Cookies.get("access_token")
+      const response = updateUserInfo(updatedInfo, token );
+      console.log(response);
+      setIsEditing(false);
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -61,14 +72,14 @@ const Profile = () => {
         
 
         setFirstName(response.first_name || "");
-            setLastName(response.last_name || "");
-            setAge(response.age ?? 0);
-            setEducation(response.education || "");
-            setProfession(response.profession || "");
-            setBio(response.bio || "");
-            setGoals(response.goals || "");
-            setMotivations(response.motivations || "");
-            setConcerns(response.concerns || "");
+        setLastName(response.last_name || "");
+        setAge(response.age ?? 0);
+        setEducation(response.education || "");
+        setProfession(response.profession || "");
+        setBio(response.bio || "");
+        setGoals(response.goals || "");
+        setMotivations(response.motivations || "");
+        setConcerns(response.concerns || "");
       }catch (error)
       {
         console.log(error);
